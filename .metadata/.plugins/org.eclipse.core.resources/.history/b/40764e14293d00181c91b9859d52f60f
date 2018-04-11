@@ -1,0 +1,40 @@
+import java.util.Date;
+
+
+public class Document {
+
+	protected String title;
+	protected String author;
+	protected Date date;
+	protected PublishingLocation location = new PublishingLocation();
+
+	public Document() {
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+	
+	
+	public String getCity() {
+		return location.getCity();
+	}
+	
+	public String getState() {
+		return location.getState();
+	}
+	
+	public String getPostCode() {
+		return location.getPostCode();
+	}
+	
+
+}

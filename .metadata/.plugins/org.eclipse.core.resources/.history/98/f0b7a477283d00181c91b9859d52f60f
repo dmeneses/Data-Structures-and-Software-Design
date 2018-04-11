@@ -1,0 +1,14 @@
+import java.util.Date;
+
+
+public class Document {
+
+	protected String title;
+	protected String author;
+	protected Date date;
+
+	public Document() {
+		super();
+	}
+
+}
