@@ -1,0 +1,61 @@
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+/*
+ * SD2x Homework #8
+ * This class represents the Data Tier in the three-tier architecture.
+ * Implement the appropriate methods for this tier below.
+ */
+
+public class DataTier {
+	
+	private String fileName; // the name of the file to read
+	private List<Book> books;
+
+	public DataTier(String inputSource) throws IOException {
+		fileName = inputSource;
+		books = getBooksFromFile();
+		System.out.println(inputSource);
+		System.out.println(books);
+	}
+	
+	List<Book> getBooksFromFile() throws IOException {
+		List<Book> books = null;
+		try (Stream<String> stream = Files.lines(Paths.get(fileName))) {
+	        books = stream.map(this::getBook)
+	        		.collect(Collectors.toList());
+		}
+		return books;
+	}
+	
+	List<Book> getAllBooks() {
+		return books;
+	}
+
+	Book getBook(String book) {
+		String bookRegex = "^(\"([^\"]*)\"|(.*)#|(.*))\\t\"([^\"]*)\"\\t(\\d+)$";
+		Pattern pattern = Pattern.compile(bookRegex);
+		Matcher matcher = pattern.matcher(book);
+		Book result = null;
+		if (matcher.matches()) {
+		    String title = matcher.group(2);
+		    if (title == null || title.isEmpty()) {
+		    	title = matcher.group(3);
+		    }
+		    if (title == null || title.isEmpty()) {
+		    	title = matcher.group(4);
+		    }
+		    String author = matcher.group(5);
+		    int year = Integer.parseInt(matcher.group(6));
+		    result = new Book(title, author, year);
+		}
+		return result;
+	}
+
+}
